@@ -1,0 +1,12 @@
+{
+  "name": "lima-vms",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^26.2.0",
+    "prettier": "^3.9.6"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
