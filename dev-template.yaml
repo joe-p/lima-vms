@@ -25,26 +25,6 @@ images:
   arch: "ppc64le"
   digest: "sha256:48f423cdbda0fc72d554b15f981f548ca4dbb3896cdc89db9afe709b9b4a9a34"
   variant: "server"
-# Fallback to the latest release image.
-# Hint: run `limactl prune` to invalidate the cache
-
-- location: https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-amd64.img
-  arch: x86_64
-
-- location: https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-arm64.img
-  arch: aarch64
-
-- location: https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-riscv64.img
-  arch: riscv64
-
-- location: https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-armhf.img
-  arch: armv7l
-
-- location: https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-s390x.img
-  arch: s390x
-
-- location: https://cloud-images.ubuntu.com/releases/noble/release/ubuntu-24.04-server-cloudimg-ppc64el.img
-  arch: ppc64le
 
 cpus: 8
 memory: "24GiB"
