@@ -17,7 +17,7 @@ type KittyTab = { title: string; id: number };
 type KittyWindow = { tabs: KittyTab[] };
 
 const { vm, repo } = await pickRepo();
-const title = `${basename(repo)} [${vm}]`;
+const title = `${basename(repo)} [${vm.name}]`;
 
 const windows: KittyWindow[] = await $`kitty @ ls`.json();
 const exists = windows.some((w) => w.tabs.some((t) => t.title === title));
@@ -25,6 +25,6 @@ const exists = windows.some((w) => w.tabs.some((t) => t.title === title));
 if (exists) {
   await $`kitty @ focus-tab --match ${"title:^" + title + "$"}`;
 } else {
-  const sshCmd = `kitten ssh -t -F ~/.lima/${vm}/ssh.config lima-${vm} 'cd git/${repo} && zsh'`;
+  const sshCmd = `kitten ssh -t -F ${vm.sshConfigFile} ${vm.hostname} 'cd git/${repo} && zsh'`;
   await $`kitty @ launch --type=tab --tab-title=${title} zsh -lic ${sshCmd}`;
 }
