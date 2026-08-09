@@ -1,29 +1,22 @@
 #!/usr/bin/env bun
-import { $ } from "bun";
 import assert from "node:assert";
-
-export type LimaVM = {
-  status: "Running" | "Stopped";
-  name: string;
-  hostname: string;
-  sshConfigFile: string;
-};
+import { LimaController, type LimaVM } from "./lib";
 
 export async function pickRepo(): Promise<{
   repo: string;
   vm: LimaVM;
   selection: string;
 }> {
-  const vmList = await $`limactl list --json | jq -s .`.quiet();
-
-  const vms: LimaVM[] = vmList.json();
+  const lima = new LimaController();
+  const vms = await lima.list();
 
   const repos: string[] = [];
   for (const vm of vms) {
     if (vm.name === "dev-template") continue;
     if (vm.status !== "Running") continue;
     const vmRepos = (
-      await $`limactl shell ${vm.name} -- find git -maxdepth 3 -mindepth 2 -type d -name ".git"`
+      await lima
+        .shell(vm.name, `find git -maxdepth 3 -mindepth 2 -type d -name ".git"`)
         .quiet()
         .text()
     )
