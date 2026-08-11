@@ -20,10 +20,10 @@ const { vm, repo } = await pickRepo();
 const title = `${basename(repo)} [${vm.name}]`;
 
 const windows: KittyWindow[] = await $`kitty @ ls`.json();
-const exists = windows.some((w) => w.tabs.some((t) => t.title === title));
+const tab = windows.flatMap((w) => w.tabs).find((t) => t.title === title);
 
-if (exists) {
-  await $`kitty @ focus-tab --match ${"title:^" + title + "$"}`;
+if (tab) {
+  await $`kitty @ focus-tab --match ${`id:${tab.id}`}`;
 } else {
   const sshCmd = `kitten ssh -t -F ${vm.sshConfigFile} ${vm.hostname} 'cd git/${repo} && zsh'`;
   await $`kitty @ launch --type=tab --tab-title=${title} zsh -lic ${sshCmd}`;
