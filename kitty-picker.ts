@@ -25,6 +25,6 @@ const tab = windows.flatMap((w) => w.tabs).find((t) => t.title === title);
 if (tab) {
   await $`kitty @ focus-tab --match ${`id:${tab.id}`}`;
 } else {
-  const sshCmd = `kitten ssh -t -F ${vm.sshConfigFile} ${vm.hostname} 'cd ${dir} && zsh'`;
+  const sshCmd = `kitten ssh -t -F ${vm.sshConfigFile} ${vm.hostname} 'cd ${dir} && zsh -lic vim'`;
   await $`kitty @ launch --type=tab --tab-title=${title} zsh -lic ${sshCmd}`;
 }
