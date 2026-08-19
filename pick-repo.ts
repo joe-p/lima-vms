@@ -3,7 +3,7 @@ import assert from "node:assert";
 import { LimaController, type LimaVM } from "./lib";
 
 export async function pickRepo(): Promise<{
-  repo: string;
+  dir: string;
   vm: LimaVM;
   selection: string;
 }> {
@@ -14,6 +14,8 @@ export async function pickRepo(): Promise<{
   for (const vm of vms) {
     if (vm.name === "dev-template") continue;
     if (vm.status !== "Running") continue;
+    repos.push(`${vm.name}: git`);
+
     const vmRepos = (
       await lima
         .shell(vm.name, `find git -maxdepth 3 -mindepth 2 -type d -name ".git"`)
@@ -22,7 +24,7 @@ export async function pickRepo(): Promise<{
     )
       .split("\n")
       .filter((repo) => repo.length)
-      .map((repo) => `${vm.name}: ${repo.split("/").slice(1, 3).join("/")}`);
+      .map((repo) => `${vm.name}: ${repo.replace("/.git", "")}`);
 
     repos.push(...vmRepos);
   }
@@ -36,16 +38,16 @@ export async function pickRepo(): Promise<{
   await proc.stdin.end();
 
   const selection = await proc.stdout.text();
-  const [selectedVmName, repo] = selection.split(": ");
+  const [selectedVmName, dir] = selection.split(": ");
 
   const selectedVm = vms.find((vm) => vm.name === selectedVmName);
 
   assert(selectedVm, "selected name should be a VM");
-  assert(repo, "selection should have repo");
+  assert(dir, "selection should have repo");
 
   return {
     vm: selectedVm,
-    repo: repo.trim(),
+    dir: dir.trim(),
     selection,
   };
 }

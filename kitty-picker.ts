@@ -16,8 +16,8 @@ import { basename } from "node:path";
 type KittyTab = { title: string; id: number };
 type KittyWindow = { tabs: KittyTab[] };
 
-const { vm, repo } = await pickRepo();
-const title = `${basename(repo)} [${vm.name}]`;
+const { vm, dir } = await pickRepo();
+const title = `${basename(dir)} [${vm.name}]`;
 
 const windows: KittyWindow[] = await $`kitty @ ls`.json();
 const tab = windows.flatMap((w) => w.tabs).find((t) => t.title === title);
@@ -25,6 +25,6 @@ const tab = windows.flatMap((w) => w.tabs).find((t) => t.title === title);
 if (tab) {
   await $`kitty @ focus-tab --match ${`id:${tab.id}`}`;
 } else {
-  const sshCmd = `kitten ssh -t -F ${vm.sshConfigFile} ${vm.hostname} 'cd git/${repo} && zsh'`;
+  const sshCmd = `kitten ssh -t -F ${vm.sshConfigFile} ${vm.hostname} 'cd ${dir} && zsh'`;
   await $`kitty @ launch --type=tab --tab-title=${title} zsh -lic ${sshCmd}`;
 }
