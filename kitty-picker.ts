@@ -12,13 +12,20 @@
 import { $ } from "bun";
 import { pickRepo } from "./pick-repo";
 import { basename } from "node:path";
+import { exit } from "node:process";
 
 type KittyTab = { title: string; id: number };
 type KittyWindow = { tabs: KittyTab[] };
 
 const { vm, dir } = await pickRepo();
-const title = `${basename(dir)} [${vm.name}]`;
 
+if (dir === "$HOME") {
+  const sshCmd = `kitten ssh -t -F ${vm.sshConfigFile} ${vm.hostname} 'zsh'`;
+  await $`kitty @ launch --type=tab zsh -lic ${sshCmd}`;
+  exit(0);
+}
+
+const title = `${basename(dir)} [${vm.name}]`;
 const windows: KittyWindow[] = await $`kitty @ ls`.json();
 const tab = windows.flatMap((w) => w.tabs).find((t) => t.title === title);
 

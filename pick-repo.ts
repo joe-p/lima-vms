@@ -14,7 +14,7 @@ export async function pickRepo(): Promise<{
   for (const vm of vms) {
     if (vm.name === "dev-template") continue;
     if (vm.status !== "Running") continue;
-    repos.push(`${vm.name}: git`);
+    repos.push(`${vm.name}: $HOME`);
 
     const vmRepos = (
       await lima
