@@ -12,7 +12,7 @@ export async function pickRepo(): Promise<{
 
   const repos: string[] = [];
   for (const vm of vms) {
-    if (vm.name === "dev-template") continue;
+    if (!vm.name.endsWith("dev")) continue;
     if (vm.status !== "Running") continue;
     repos.push(`${vm.name}: $HOME`);
 
