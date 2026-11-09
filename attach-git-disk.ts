@@ -22,11 +22,18 @@ if (disks.some((d) => d.name === diskName)) {
 } else {
   await lima.cmd(`disk create ${diskName} --size 20GiB`);
 }
+const user = process.env.USER;
+const gitDir = `/home/${user}.guest/git`;
+
+// Replace any existing entry for this disk so re-running the script stays idempotent
+const disk = JSON.stringify({
+  name: diskName,
+  format: true,
+  fsType: "ext4",
+  mountPoint: gitDir,
+});
 await lima.cmd(
-  `edit ${vm} --start --set '.additionalDisks += [{"name":"${vm}-git","format":true,"fsType":"ext4"}]'`,
+  `edit ${vm} --start --set '.additionalDisks = ((.additionalDisks // []) | map(select(.name != "${diskName}"))) + [${disk}]'`,
 );
 
-const gitDir = `/home/${process.env.USER}.guest/git`;
-await lima.shell(vm, `mkdir -p ${gitDir}`);
-await lima.shell(vm, `sudo mount --bind /mnt/lima-${vm}-git ${gitDir}`);
-await lima.shell(vm, `sudo chown -R joe:joe ${gitDir}`);
+await lima.shell(vm, `sudo chown -R ${user}:${user} ${gitDir}`);
