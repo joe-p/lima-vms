@@ -1,75 +1,18 @@
 images:
-# Try to use release-yyyyMMdd image if available. Note that release-yyyyMMdd will be removed after several months.
+  # Pinned release (digest-verified, removed after a few months)
+  - location: "https://cloud-images.ubuntu.com/releases/noble/release-20260926/ubuntu-24.04-server-cloudimg-arm64.img"
+    arch: "aarch64"
+    digest: "sha256:1d6bffe64b848468ac97f821d369a4846d983de1800ccf6b5ec8853e85cefc55"
 
-- location: "https://cloud-images.ubuntu.com/releases/resolute/release-20261016/ubuntu-26.04-server-cloudimg-amd64.img"
-  arch: "x86_64"
-  digest: "sha256:5645d0318ad21f643ebb1ac4567514620e9893380b07b0201fda163baa5b7eb5"
-  variant: "server"
-# x86-64-v3 optimized image. Still runs as x86_64, distinguished by archVariant.
-# Select it with `limactl start --arch-variant v3`.
-- location: "https://cloud-images.ubuntu.com/releases/resolute/release-20261016/ubuntu-26.04-server-cloudimg-amd64v3.img"
-  arch: "x86_64"
-  digest: "sha256:1da459ae2a59e76e9de460d4b07c237e11d15c7bd72ab44c88a6bcc35f054b2d"
-  variant: "server"
-  archVariant: "v3"
-- location: "https://cloud-images.ubuntu.com/releases/resolute/release-20261016/ubuntu-26.04-server-cloudimg-arm64.img"
-  arch: "aarch64"
-  digest: "sha256:8eb876c2ccc4b6ff89e4a65d511815923b285e04503ba465809bf587f763da24"
-  variant: "server"
-- location: "https://cloud-images.ubuntu.com/releases/resolute/release-20261016/ubuntu-26.04-server-cloudimg-riscv64.img"
-  arch: "riscv64"
-  digest: "sha256:5309a1cf1e61c05a4222b6381f0bb6c38fc32cc9941bdb70e18d2df865ee60a1"
-  variant: "server"
-- location: "https://cloud-images.ubuntu.com/releases/resolute/release-20261016/ubuntu-26.04-server-cloudimg-armhf.img"
-  arch: "armv7l"
-  digest: "sha256:9f4763c1fb4f54193a8eec13384ad388b4bd41892d1e4a1c533dc934be7c2a18"
-  variant: "server"
-- location: "https://cloud-images.ubuntu.com/releases/resolute/release-20261016/ubuntu-26.04-server-cloudimg-s390x.img"
-  arch: "s390x"
-  digest: "sha256:18b92368ab6cd33a177badab505b2f489b9bfbcf86866b22c6d1afd13fa6aa3b"
-  variant: "server"
-- location: "https://cloud-images.ubuntu.com/releases/resolute/release-20261016/ubuntu-26.04-server-cloudimg-ppc64el.img"
-  arch: "ppc64le"
-  digest: "sha256:7694b11cb77dc1b7b0f4285d68dc176a8ca98df61f03899e8170d18509ca124f"
-  variant: "server"
+vmType: "vz"
 
-vmType: "vz" 
+# See https://lima-vm.io/docs/config/plain/
+# This disables a bunch of the lima-specific features and reducdes overall attack surface
+plain: true
 
 cpus: 8
 memory: "24GiB"
 disk: "20GiB"
 
-mounts: []
-
-propagateProxyEnv: false
-
-hostResolver:
-  enabled: true
-  ipv6: false
-
-containerd:
-  system: false
-  user: false  
-
-networkOpts:
-  hostLoopback: false
-
-video:
-  display: "none"
-audio:
-  device: "none"
-rosetta:
-  enabled: false
-  binfmt: false
-tpm: false
-
-nestedVirtualization: true
-
-ssh:
-  forwardAgent: true
-  loadDotSSHPubKeys: false 
-  forwardX11: false
-  forwardX11Trusted: false
-  overVsock: true 
-  localPort: 0
+nestedVirtualization: false
 

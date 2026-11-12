@@ -2,8 +2,8 @@
 
 set -ex
 
-limactl create -y dev-template.yaml
-limactl start dev-template
+limactl create --debug -y dev-template.yaml
+limactl start --debug dev-template
 
 limactl shell dev-template -- sh -c "sudo DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a APT_LISTCHANGES_FRONTEND=none apt-get -y update"
 limactl shell dev-template -- sh -c "sudo DEBIAN_FRONTEND=noninteractive NEEDRESTART_MODE=a APT_LISTCHANGES_FRONTEND=none apt-get -y -o Dpkg::Options::=\"--force-confdef\" -o Dpkg::Options::=\"--force-confold\" upgrade"

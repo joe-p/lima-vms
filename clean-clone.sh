@@ -4,16 +4,20 @@ set -euox pipefail
 src=$1
 dst=$2
 
+VM=lima-$dst
+
 limactl stop -f "$src"
 limactl clone --start "$src" "$dst"
-
-limactl shell "$dst" -- sudo cloud-init clean --logs --machine-id
-limactl shell "$dst" -- sudo rm -rf /var/log/journal/*
-limactl shell "$dst" -- sudo rm -f /etc/ssh/ssh_host_*
-limactl shell "$dst" -- sudo ssh-keygen -A
+ssh -O exit $VM
+ssh -A $VM -- sudo cloud-init clean --logs --machine-id
+ssh -A $VM -- sudo rm -rf /var/log/journal/*
+ssh -A $VM -- sudo rm -f /etc/ssh/ssh_host_*
+ssh -A $VM -- sudo ssh-keygen -A
 
 limactl stop "$dst"
-limactl start "$dst"
+rm ~/.lima/$dst/ssh.known_hosts
+limactl start --debug "$dst"
+ssh -O exit $VM
 
-limactl shell "$dst" -- hostnamectl
-limactl shell "$dst" -- sudo journalctl -n 5
+ssh -A $VM -- hostnamectl
+ssh -A $VM -- sudo journalctl -n 5
