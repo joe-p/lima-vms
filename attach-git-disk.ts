@@ -33,7 +33,12 @@ const disk = JSON.stringify({
   mountPoint: gitDir,
 });
 await lima.cmd(
-  `edit ${vm} --start --set '.additionalDisks = ((.additionalDisks // []) | map(select(.name != "${diskName}"))) + [${disk}]'`,
+  `edit ${vm} --set '.additionalDisks = ((.additionalDisks // []) | map(select(.name != "${diskName}"))) + [${disk}]'`,
 );
 
+await lima.cmd(`start --debug ${vm}`);
+await lima.shell(
+  vm,
+  `echo 'LABEL=lima-${vm}-git /home/joe.guest/git ext4 defaults,nofail,x-systemd.device-timeout=5s 0 2' >> /etc/fstab`,
+);
 await lima.shell(vm, `sudo chown -R ${user}:${user} ${gitDir}`);

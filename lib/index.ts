@@ -21,7 +21,7 @@ export class LimaController {
   }
 
   shell(vmName: string, cmd: string): $.ShellPromise {
-    return this.cmd(`shell ${vmName} -- ${cmd}`);
+    return $`ssh -ASnone lima-${vmName} -- ${cmd}`;
   }
 
   cmd(cmd: string): $.ShellPromise {

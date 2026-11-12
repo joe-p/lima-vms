@@ -16,3 +16,6 @@ disk: "20GiB"
 
 nestedVirtualization: false
 
+ssh:
+  forwardAgent: true
+
