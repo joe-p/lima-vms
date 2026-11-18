@@ -21,3 +21,4 @@ limactl start --debug "$dst"
 
 ssh $VM -- hostnamectl
 ssh $VM -- sudo journalctl -n 5
+ssh $VM -- dotfiles pull
