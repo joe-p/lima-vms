@@ -39,6 +39,7 @@ await lima.cmd(
 await lima.cmd(`start --debug ${vm}`);
 await lima.shell(
   vm,
-  `echo 'LABEL=lima-${vm}-git /home/joe.guest/git ext4 defaults,nofail,x-systemd.device-timeout=5s 0 2' >> /etc/fstab`,
+  `echo 'LABEL=lima-${vm}-git /home/joe.guest/git ext4 defaults,nofail,x-systemd.device-timeout=5s 0 2' | sudo tee -a /etc/fstab`,
 );
+await lima.shell(vm, `sudo systemctl daemon-reload && sudo mount -a`);
 await lima.shell(vm, `sudo chown -R ${user}:${user} ${gitDir}`);
