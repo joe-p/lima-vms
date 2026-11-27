@@ -27,7 +27,7 @@ type Space = {
   ];
 };
 
-const herdrAppLs = await $`herdr-app ls`;
+const herdrAppLs = await $`herdr-app ls`.quiet();
 const spaces: Space[] = JSON.parse(herdrAppLs.text()).spaces;
 
 try {
@@ -37,13 +37,13 @@ try {
   const dirSpace = vmSpaces.find((s) => s.name === repo.dir.split("/").at(-1));
 
   if (dirSpace) {
-    await $`herdr-app do space.select --id ${dirSpace.id}`;
+    await $`herdr-app do space.select --id ${dirSpace.id}`.quiet();
   } else {
-    await $`herdr-app do space.new --machine ${repo.vm.hostname} --folder /home/joe.guest/${repo.dir}`;
+    await $`herdr-app do space.new --machine ${repo.vm.hostname} --folder /home/joe.guest/${repo.dir}`.quiet();
   }
 } finally {
   spaces.forEach(async (s) => {
     if (s.name === "picker")
-      await $`herdr-app do space.close --id ${s.id} --confirmed true`;
+      await $`herdr-app do space.close --id ${s.id} --confirmed true`.quiet();
   });
 }

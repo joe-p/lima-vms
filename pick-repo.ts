@@ -53,5 +53,5 @@ export async function pickRepo(): Promise<{
 }
 
 if (import.meta.main) {
-  console.log((await pickRepo()).selection);
+  await pickRepo();
 }
