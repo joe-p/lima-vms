@@ -1,0 +1,21 @@
+# macos-gui.yaml
+minimumLimaVersion: 2.1.0
+
+base:
+- template:macos-27
+
+vmType: vz
+
+video:
+  display: default
+
+cpus: 4
+memory: 8GiB
+disk: 100GiB
+
+osOpts:
+  Darwin:
+    # Skips the Setup Assistant / mini-buddy wizard on first GUI login.
+    # Requires Lima >= 2.3 and macOS >= 13.0
+    suppressFirstLoginSetup: true
+
