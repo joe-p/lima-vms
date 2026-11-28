@@ -44,7 +44,7 @@ try {
     await $`herdr-app do space.select --id ${dirSpace.id}`.quiet();
   } else {
     const dir = repo.dir === "$HOME" ? "" : repo.dir;
-    await $`herdr-app do space.new --machine ${repo.vm.hostname} --folder /home/joe.guest/${dir} --name ${nameForDir(dir)}`.quiet();
+    await $`herdr-app do space.new --machine ${repo.vm.hostname} --folder ${repo.vm.config.user.home}/${dir} --name ${nameForDir(dir)}`.quiet();
   }
 } finally {
   spaces.forEach(async (s) => {

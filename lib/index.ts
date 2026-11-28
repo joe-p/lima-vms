@@ -5,6 +5,7 @@ export type LimaVM = {
   name: string;
   hostname: string;
   sshConfigFile: string;
+  config: { user: { home: string } };
 };
 
 export class LimaController {
